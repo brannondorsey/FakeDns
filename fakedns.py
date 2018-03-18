@@ -300,19 +300,19 @@ class Rule (object):
 
         # Check to see if we have a rebind rule and if we do, return that addr first
         if self.rebinds:
-            if self.match_history.has_key(addr):
+            if self.match_history.has_key(domain):
 
                 # passed the threshold - start doing a rebind
-                if self.match_history[addr] >= self.rebind_threshold:
+                if self.match_history[domain] >= self.rebind_threshold:
                     return self.rebinds.next()
 
                 # plus one
                 else:
-                    self.match_history[addr] += 1
+                    self.match_history[domain] += 1
 
             # add new client to this match history
             else:
-                self.match_history[addr] = 1
+                self.match_history[domain] = 1
 
         # We didn't trip on any rebind rules (or didnt have any)
         # but we're returning a rule-based entry based on the match
@@ -357,9 +357,6 @@ class RuleEngine2:
         Parses the DNS Rulefile, validates the rules, replaces keywords
 
         """
-
-        # track DNS requests here
-        self.match_history = {}
 
         self.rule_list = []
 
